@@ -39,7 +39,7 @@ class PermissionSeeder extends Seeder
                         'name' => 'role_management',
                         'permission' => [
                             [
-                                'name' => 'view_systems_role_management',
+                                'name' => 'view_settings_role_management',
                                 'label' => 'View Role Management',
                             ]
                         ]

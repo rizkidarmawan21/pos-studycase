@@ -44,7 +44,7 @@ const updateValue = (event) => {
                 class="leading-5 shadow-sm placeholder-slate-400 rounded text-sm text-slate-800 bg-white border w-full focus:ring-0" 
                 :type="type" 
                 :placeholder="placeholder" 
-                autocomplete="off" 
+                :autocomplete="'new-'+type" 
                 :disabled="disabled"
                 @input="updateValue"
                 :value="modelValue"

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Settings\RoleManagementController;
-
+use App\Http\Controllers\Settings\UserManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +21,13 @@ Route::prefix('settings')->name('settings.')->group(function () {
         Route::post('add-role', 'storeNewRole')->name('storerole');
         Route::put('{id}/update-role', 'updateRole')->name('updateRole');
         Route::delete('{id}/delete-role', 'deleteRole')->name('deleterole');
+    });
+
+    Route::controller(UserManagementController::class)->prefix('user')->name('user.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('get-data', 'getData')->name('getdata');
+        Route::post('create', 'createData')->name('create');
+        Route::post('{id}/update', 'updateData')->name('update');
+        Route::delete('{id}/delete', 'deleteData')->name('delete');
     });
 });

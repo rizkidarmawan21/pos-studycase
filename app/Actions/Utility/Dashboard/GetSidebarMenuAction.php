@@ -17,12 +17,17 @@ class GetSidebarMenuAction
                 'text' => 'Settings',
                 'icon' => 'VSetting',
                 'group' => true,
-                'can'  => ['view_systems_role_management'],
+                'can'  => ['view_settings_role_management'],
                 'submenu' => [
                     [
                         'text' => 'Role Management',
                         'url'  => route('settings.role.index'),
-                        'can'  => 'view_systems_role_management',
+                        'can'  => 'view_settings_role_management',
+                    ],
+                    [
+                        'text' => 'User Management',
+                        'url'  => route('settings.user.index'),
+                        'can'  => 'view_settings_role_management',
                     ],
                 ],
             ],
