@@ -1,0 +1,11 @@
+.form-input,
+.form-textarea,
+.form-multiselect,
+.form-select,
+.form-checkbox,
+.form-radio ,
+.form-calender {
+    &:focus {
+        @apply ring-0;
+    }
+}
