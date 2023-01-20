@@ -24,21 +24,10 @@ Route::get('/', function () {
 Route::prefix('admin')->group(function () {
     Route::controller(LoginController::class)->group(function () {
         Route::get('login', 'showLoginForm')->name('login');
-        Route::get('success-reset', 'showSuccessResetPassword')->name('successreset');
         Route::post('login', 'login');
         Route::middleware(['auth'])->group(function () {
             Route::post('logout', 'logout')->name('logout');
         });
-    });
-    
-    Route::controller(ResetPasswordController::class)->group(function () {
-        Route::get('password/reset/{token}', 'showResetForm')->name('showResetForm');
-        Route::post('password/reset', 'reset')->name('resetpassword');
-    });
-
-    Route::controller(ForgotPasswordController::class)->group(function () {
-        Route::get('password/reset', 'showLinkRequestForm')->name('showlinkrequestform');
-        Route::post('password/email', 'sendResetLinkEmail')->name('sendresetlinkemail');
     });
 
     Route::middleware(['auth'])->group(function () {
@@ -51,5 +40,6 @@ Route::prefix('admin')->group(function () {
         });
 
         require __DIR__ . '/admin/settings.php';
+        require __DIR__ . '/admin/master_data.php';
     });
 });

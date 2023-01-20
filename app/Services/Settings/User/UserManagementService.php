@@ -15,7 +15,7 @@ class UserManagementService
         $query = User::query();
 
         $query->when(request('search', false), function ($q) use ($search) {
-            $q->where('title', 'like', '%' . $search . '%');
+            $q->where('name', 'like', '%' . $search . '%');
         });
 
         return $query->paginate(10);

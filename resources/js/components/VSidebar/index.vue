@@ -4,13 +4,8 @@ import { Link } from "@inertiajs/inertia-vue3";
 import VHamburgerHalf from "@/components/src/icons/VHamburgerHalf.vue";
 import VHamburgerFull from "@/components/src/icons/VHamburgerFull.vue";
 import VDashboard from "@/components/src/icons/VDashboard.vue";
-import VPlane from "@/components/src/icons/VPlane.vue";
-import VPayroll from "@/components/src/icons/VPayroll.vue";
-import VEmployee from "@/components/src/icons/VEmployee.vue";
+import VTag from "@/components/src/icons/VTag.vue";
 import VSetting from "@/components/src/icons/VSetting.vue";
-import VNoticeBoard from "@/components/src/icons/VNoticeBoard.vue";
-import VApproval from "@/components/src/icons/VApproval.vue";
-import VAttendanceSolid from "@/components/src/icons/VAttendanceSolid.vue";
 import { array, bool } from "vue-types";
 import VSidebarGroup from "@/components/VSidebarGroup/index.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
@@ -18,12 +13,7 @@ import { usePage } from "@inertiajs/inertia-vue3";
 const icons = {
     VDashboard,
     VSetting,
-    VAttendanceSolid,
-    VEmployee,
-    VPlane,
-    VPayroll,
-    VNoticeBoard,
-    VApproval
+    VTag
 }
 const props = defineProps({
     sidebarOpen: bool().def(false),

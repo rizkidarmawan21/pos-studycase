@@ -5,7 +5,6 @@ import { bool, object } from "vue-types";
 import { notify } from "notiwind";
 import VDialog from '@/components/VDialog/index.vue';
 import VButton from '@/components/VButton/index.vue';
-import VSelect from '@/components/VSelect/index.vue';
 import VInput from '@/components/VInput/index.vue';
 
 const props = defineProps({
@@ -40,7 +39,7 @@ const submit = async () => {
 
 const update = async () => {
     isLoading.value = true
-    axios.post(route('settings.user.update', { 'id': props.data.id }), form.value)
+    axios.post(route('category.update', { 'id': props.data.id }), form.value)
         .then((res) => {
             emit('close')
             emit('successSubmit')
@@ -79,7 +78,7 @@ const update = async () => {
 
 const create = async () => {
     isLoading.value = true
-    axios.post(route('settings.user.create'), form.value)
+    axios.post(route('category.create'), form.value)
         .then((res) => {
             emit('close')
             emit('successSubmit')
@@ -118,7 +117,7 @@ const create = async () => {
 </script>
 
 <template>
-    <VDialog :showModal="openDialog" :title="updateAction ? 'Update User' : 'Create User'" @opened="openForm" @closed="closeForm" size="xl">
+    <VDialog :showModal="openDialog" :title="updateAction ? 'Update Category' : 'Create Category'" @opened="openForm" @closed="closeForm" size="xl">
         <template v-slot:close>
             <button class="text-slate-400 hover:text-slate-500" @click="$emit('close')">
                 <div class="sr-only">Close</div>
@@ -130,20 +129,14 @@ const create = async () => {
         </template>
         <template v-slot:content>
             <div class="grid grid-cols-2 gap-3">
-                <VInput placeholder="Insert Name" label="Name" :required="true" v-model="form.name"
-                    :errorMessage="formError.name" @update:modelValue="formError.name = ''" />
-                <VInput placeholder="Insert Email" label="Email" :required="true" v-model="form.email"
-                    :errorMessage="formError.email" @update:modelValue="formError.email = ''"
-                    type="email" />
                 <div class="col-span-2">
-                    <VSelect placeholder="Choose Role" :required="true" v-model="form.role_id" :options="additional.role_list"
-                        label="Role" :errorMessage="formError.role_id" @update:modelValue="formError.role_id = ''" />
+                    <VInput placeholder="Insert Name" label="Name" :required="true" v-model="form.name" :errorMessage="formError.name"
+                        @update:modelValue="formError.name = ''" />
                 </div>
-                <VInput placeholder="Insert Password" label="Password" :required="!updateAction" v-model="form.password"
-                    :errorMessage="formError.password" @update:modelValue="formError.password = ''" type="password" />
-                <VInput placeholder="Confirm Password" label="Confirm Password" :required="!updateAction" v-model="form.password_confirmation"
-                    :errorMessage="formError.password_confirmation" @update:modelValue="formError.password_confirmation = '', formError.password = ''"
-                    type="password" />
+                <div class="col-span-2">
+                    <VInput placeholder="Insert Description" label="Description" :required="true" v-model="form.description" :errorMessage="formError.description"
+                        @update:modelValue="formError.description = ''" />
+                </div>
             </div>
         </template>
         <template v-slot:footer>

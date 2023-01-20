@@ -14,6 +14,12 @@ class GetSidebarMenuAction
                 'can'  => 'view_general_dashboard'
             ],
             [
+                'text' => 'Category',
+                'url'  => route('category.index'),
+                'icon' => 'VTag',
+                'can'  => 'view_settings_role_management'
+            ],
+            [
                 'text' => 'Settings',
                 'icon' => 'VSetting',
                 'group' => true,
