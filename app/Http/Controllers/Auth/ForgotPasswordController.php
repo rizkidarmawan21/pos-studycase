@@ -21,25 +21,5 @@ class ForgotPasswordController extends Controller
     */
 
     use SendsPasswordResetEmails;
-
-    protected function sendResetLinkResponse($response)
-    {
-        return response()->json([
-            'message' => 'success'
-        ]);
-    }
-
-    public function showLinkRequestForm()
-    {
-        return Inertia::render('admin/auth/reset-password', [
-            "title" => 'Reset Password'
-        ]);
-    }
-
-    protected function sendResetLinkFailedResponse(Request $request, $response)
-    {
-        return response()->json([
-            'message' => 'Something wrong, please try again later'
-        ], 422);
-    }
+    
 }

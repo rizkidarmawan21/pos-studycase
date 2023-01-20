@@ -22,26 +22,4 @@ class ResetPasswordController extends Controller
 
     use ResetsPasswords;
 
-    protected function sendResetLinkResponse($response)
-    {
-        return response()->json([
-            'message' => 'success'
-        ]);
-    }
-
-    public function showResetForm(Request $request, $token = null)
-    {
-        return Inertia::render('admin/auth/change-password', [
-            'token' => $token,
-            'email' => $request->email,
-            "title" => 'BattleHr | Change Password'
-        ]);
-    }
-
-    protected function sendResetLinkFailedResponse(Request $request, $response)
-    {
-        return response()->json([
-            'message' => 'Something wrong, please try again later'
-        ], 422);
-    }
 }

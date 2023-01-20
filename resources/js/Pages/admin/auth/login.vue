@@ -65,20 +65,9 @@ const props = defineProps({
                     </VInput>
                 </div>
                 <div class="flex items-center justify-between mt-6">
-                    <div class="mr-1">
-                        <label class="flex items-center">
-                            <input type="checkbox" class="form-checkbox" />
-                            <span class="text-sm text-slate-600 ml-2">Remember me</span>
-                        </label>
-                    </div>
                     <VButton :is-loading="isLoading" @click="login" label="Log In" />
                 </div>
             </form>
-            <div class="pt-5 mt-6 border-t border-slate-200">
-                <div class="text-sm">
-                    <Link class="font-medium text-primary hover:text-primary-hover underline" :href="route('showlinkrequestform')">Forgot Password?</Link>
-                </div>
-            </div>
         </div>
     </div>
 </template>
