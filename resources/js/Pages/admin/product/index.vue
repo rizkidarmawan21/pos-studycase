@@ -26,6 +26,7 @@ import VModalForm from './ModalForm.vue';
 
 const query = ref([])
 const searchFilter = ref("");
+const filter = ref({});
 const breadcrumb = [
     {
         name: "Dashboard",
@@ -33,9 +34,9 @@ const breadcrumb = [
         to: route('dashboard.index')
     },
     {
-        name: "Category",
+        name: "Product",
         active: true,
-        to: route('category.index')
+        to: route('product.index')
     },
 ]
 const pagination = ref({
@@ -55,18 +56,20 @@ const updateAction = ref(false)
 const itemSelected = ref({})
 const openAlert = ref(false)
 const openModalForm = ref(false)
-const heads = ["Name", "Description", ""]
+const heads = ["Image", "Name", "Description", "Price", "Stock", ""]
 const isLoading = ref(true)
 
 const props = defineProps({
-    title: string()
+    title: string(),
+    additional: object(),
 })
 
 const getData = debounce(async (page) => {
-    axios.get(route('category.getdata'), {
+    axios.get(route('product.getdata'), {
         params: {
             page: page,
-            search: searchFilter.value
+            search: searchFilter.value,
+            filter_category: filter.value.filter_category,
         }
     }).then((res) => {
         query.value = res.data.data
@@ -97,6 +100,18 @@ const searchHandle = (search) => {
     isLoading.value = true
     getData(1)
 };
+
+const applyFilter = (data) => {
+    filter.value = data
+    isLoading.value = true
+    getData(1)
+}
+
+const clearFilter = (data) => {
+    filter.value = data
+    isLoading.value = true
+    getData(1)
+}
 
 const handleAddModalForm = () => {
     updateAction.value = false
@@ -134,7 +149,7 @@ const closeAlert = () => {
 }
 
 const deleteHandle = async () => {
-    axios.delete(route('category.delete', { 'id': itemSelected.value.id })
+    axios.delete(route('product.delete', { 'id': itemSelected.value.id })
     ).then((res) => {
         notify({
             type: "success",
@@ -163,18 +178,18 @@ onMounted(() => {
     <Head :title="props.title" />
     <VBreadcrumb :routes="breadcrumb" />
     <div class="mb-4 sm:mb-6 flex justify-between items-center">
-        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Category</h1>
+        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Product</h1>
     </div>
     <div class="bg-white shadow-lg rounded-sm border border-slate-200"
         :class="isLoading && 'min-h-[40vh] sm:min-h-[50vh]'">
         <header class="block justify-between items-center sm:flex py-6 px-4">
             <h2 class="font-semibold text-slate-800">
-                All Categories <span class="text-slate-400 !font-medium ml">{{ pagination.total }}</span>
+                All Products <span class="text-slate-400 !font-medium ml">{{ pagination.total }}</span>
             </h2>
             <div class="mt-3 sm:mt-0 flex space-x-2 sm:justify-between justify-end">
                 <!-- Filter -->
-                <VFilter @search="searchHandle" />
-                <VButton label="Add Category" type="primary" @click="handleAddModalForm" class="mt-auto" />
+                <VFilter @search="searchHandle" @apply="applyFilter" @clear="clearFilter" :additional="additional"/>
+                <VButton label="Add Product" type="primary" @click="handleAddModalForm" class="mt-auto" />
             </div>
         </header>
 
@@ -193,8 +208,16 @@ onMounted(() => {
                 </td>
             </tr>
             <tr v-for="(data, index) in query" :key="index" v-else>
-                <td class="px-4 whitespace-nowrap h-16"> {{ data.name }} </td>
+                <td class="px-4 whitespace-nowrap h-16">
+                    <img class="w-32 h-32 py-2" :src="data.preview_image"/>
+                </td>
+                <td class="px-4 whitespace-nowrap h-16"> 
+                    <p>{{ data.name }}</p>
+                    <p>Category: {{ data.category_name }}</p>
+                </td>
                 <td class="px-4 whitespace-nowrap h-16"> {{ data.description }} </td>
+                <td class="px-4 whitespace-nowrap h-16"> Rp{{ data.price_formatted }} </td>
+                <td class="px-4 whitespace-nowrap h-16"> {{ data.stock }} </td>
                 <td class="px-4 whitespace-nowrap h-16 text-right">
                     <VDropdownEditMenu class="relative inline-flex r-0" :align="'right'"
                         :last="index === query.length - 1 ? true : false">
@@ -226,5 +249,5 @@ onMounted(() => {
         :headerLabel="alertData.headerLabel" :content-label="alertData.contentLabel" :close-label="alertData.closeLabel"
         :submit-label="alertData.submitLabel" />
     <VModalForm :data="itemSelected" :update-action="updateAction" :open-dialog="openModalForm" @close="closeModalForm"
-        @successSubmit="successSubmit"/>
+        @successSubmit="successSubmit" :additional="additional" />
 </template>

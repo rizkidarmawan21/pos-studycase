@@ -20,6 +20,12 @@ class GetSidebarMenuAction
                 'can'  => 'view_settings_role_management'
             ],
             [
+                'text' => 'Product',
+                'url'  => route('product.index'),
+                'icon' => 'VProduct',
+                'can'  => 'view_settings_role_management'
+            ],
+            [
                 'text' => 'Settings',
                 'icon' => 'VSetting',
                 'group' => true,

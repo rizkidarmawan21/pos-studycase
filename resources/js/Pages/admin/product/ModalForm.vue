@@ -6,11 +6,13 @@ import { notify } from "notiwind";
 import VDialog from '@/components/VDialog/index.vue';
 import VButton from '@/components/VButton/index.vue';
 import VInput from '@/components/VInput/index.vue';
+import VSelect from '@/components/VSelect/index.vue';
 
 const props = defineProps({
     openDialog: bool(),
     updateAction: bool().def(false),
-    data: object().def({})
+    data: object().def({}),
+    additional: object().def({})
 })
 
 const emit = defineEmits(['close', 'successSubmit'])
@@ -18,10 +20,12 @@ const emit = defineEmits(['close', 'successSubmit'])
 const isLoading = ref(false);
 const formError = ref({})
 const form = ref({})
+const previewImage = ref('')
 
 const openForm = () => {
     if (props.updateAction) {
         form.value = Object.assign(form.value, props.data)
+        previewImage.value = props.data.preview_image
     } else {
         form.value = ref({})
     }
@@ -30,15 +34,30 @@ const openForm = () => {
 const closeForm = () => {
     form.value = ref({})
     formError.value = ref({})
+    if (document.getElementById("productImage")) {
+        document.getElementById("productImage").value = null
+    }
+    previewImage.value = ''
+}
+
+const fileSelected = (evt) => {
+    formError.value.image = ''
+    form.value.image = evt.target.files[0];
+    previewImage.value = URL.createObjectURL(evt.target.files[0]);
 }
 
 const submit = async () => {
-    props.updateAction ? update() : create()
+    const fd = new FormData();
+    Object.keys(form.value).forEach(key => {
+        fd.append(key, form.value[key]);
+    })
+
+    props.updateAction ? update(fd) : create(fd)
 }
 
-const update = async () => {
+const update = async (fd) => {
     isLoading.value = true
-    axios.post(route('category.update', { 'id': props.data.id }), form.value)
+    axios.post(route('product.update', { 'id': props.data.id }), fd)
         .then((res) => {
             emit('close')
             emit('successSubmit')
@@ -75,9 +94,9 @@ const update = async () => {
         }).finally(() => isLoading.value = false)
 }
 
-const create = async () => {
+const create = async (fd) => {
     isLoading.value = true
-    axios.post(route('category.create'), form.value)
+    axios.post(route('product.create'), fd)
         .then((res) => {
             emit('close')
             emit('successSubmit')
@@ -116,7 +135,7 @@ const create = async () => {
 </script>
 
 <template>
-    <VDialog :showModal="openDialog" :title="updateAction ? 'Update Category' : 'Create Category'" @opened="openForm" @closed="closeForm" size="xl">
+    <VDialog :showModal="openDialog" :title="updateAction ? 'Update Product' : 'Create Product'" @opened="openForm" @closed="closeForm" size="xl">
         <template v-slot:close>
             <button class="text-slate-400 hover:text-slate-500" @click="$emit('close')">
                 <div class="sr-only">Close</div>
@@ -135,6 +154,28 @@ const create = async () => {
                 <div class="col-span-2">
                     <VInput placeholder="Insert Description" label="Description" :required="true" v-model="form.description" :errorMessage="formError.description"
                         @update:modelValue="formError.description = ''" />
+                </div>
+                <VInput placeholder="Insert Price" label="Price" :required="true" v-model="form.price" :errorMessage="formError.price"
+                    @update:modelValue="formError.price = ''" type="number"/>
+                <VInput placeholder="Insert Stock" label="Stock" :required="true" v-model="form.stock" :errorMessage="formError.stock"
+                    @update:modelValue="formError.stock = ''" type="number"/>
+                <div class="col-span-2">
+                    <VSelect placeholder="Choose Category" :required="true" v-model="form.category_id"
+                        :options="additional.category_list" label="Category" :errorMessage="formError.category_id"
+                        @update:modelValue="formError.category_id = ''" />
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-slate-600 mb-1" for="productImage">Product Image
+                        <span class="text-rose-500" v-if="!updateAction">*</span></label>
+                    <img class="w-32 h-32 mb-1" :src="previewImage" v-if="previewImage" />
+                    <input class="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md"
+                        type="file" id="productImage" accept=".jpg, .jpeg, .png" @change="fileSelected">
+                    <div class="text-xs mt-1" 
+                        :class="[{
+                            'text-rose-500': formError.image
+                        }]" v-if="formError.image">
+                        {{ formError.image }}
+                    </div>
                 </div>
             </div>
         </template>
