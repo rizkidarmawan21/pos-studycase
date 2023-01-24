@@ -9,7 +9,7 @@ class GetCategoryOptions
 {
     public function handle()
     {
-        $category = Category::get()->pluck('name', 'id');
+        $category = Category::pluck('name', 'id');
 
         return $category;
     }

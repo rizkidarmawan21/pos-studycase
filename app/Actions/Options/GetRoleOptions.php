@@ -9,7 +9,7 @@ class GetRoleOptions
 {
     public function handle()
     {
-        $role = Role::get()->pluck('name', 'id');
+        $role = Role::pluck('name', 'id');
 
         return $role;
     }

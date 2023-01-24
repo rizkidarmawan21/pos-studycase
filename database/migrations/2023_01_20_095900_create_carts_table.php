@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('cashier_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->bigInteger('qty');
+            $table->decimal('price', 48, 4);
             $table->timestamps();
         });
     }

@@ -41,5 +41,6 @@ Route::prefix('admin')->group(function () {
 
         require __DIR__ . '/admin/settings.php';
         require __DIR__ . '/admin/master_data.php';
+        require __DIR__ . '/admin/core.php';
     });
 });

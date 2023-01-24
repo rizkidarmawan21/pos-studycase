@@ -14,6 +14,12 @@ class GetSidebarMenuAction
                 'can'  => 'view_general_dashboard'
             ],
             [
+                'text' => 'Transaction',
+                'url'  => route('transaction.index'),
+                'icon' => 'VTransaction',
+                'can'  => 'view_settings_role_management'
+            ],
+            [
                 'text' => 'Category',
                 'url'  => route('category.index'),
                 'icon' => 'VTag',
