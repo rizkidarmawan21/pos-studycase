@@ -8,12 +8,6 @@ class GetSidebarMenuAction
     {
         return [
             [
-                'text' => 'Dashboard',
-                'url'  => route('dashboard.index'),
-                'icon' => 'VDashboard',
-                'can'  => 'view_general_dashboard'
-            ],
-            [
                 'text' => 'Transaction',
                 'url'  => route('transaction.index'),
                 'icon' => 'VTransaction',
@@ -29,6 +23,12 @@ class GetSidebarMenuAction
                 'text' => 'Product',
                 'url'  => route('product.index'),
                 'icon' => 'VProduct',
+                'can'  => 'view_settings_role_management'
+            ],
+            [
+                'text' => 'Report',
+                'url'  => route('report.index'),
+                'icon' => 'VBook',
                 'can'  => 'view_settings_role_management'
             ],
             [

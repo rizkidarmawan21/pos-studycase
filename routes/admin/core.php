@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TransactionController;
 
 /*
@@ -24,4 +25,13 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     // Order Related Route
     Route::post('create-order', 'createOrder')->name('createorder');
     Route::get('{id}/print-order', 'printOrder')->name('printorder');
+});
+
+Route::controller(ReportController::class)->prefix('report')->name('report.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('get-data', 'getData')->name('getdata');
+
+    // Export Route
+    Route::get('report/export-excel', 'exportExcelReport')->name('exportexcel');
+    Route::get('report/export-pdf', 'exportPdfReport')->name('exportpdf');
 });

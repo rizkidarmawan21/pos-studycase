@@ -8,6 +8,7 @@ import VTag from "@/components/src/icons/VTag.vue";
 import VProduct from "@/components/src/icons/VProduct.vue";
 import VSetting from "@/components/src/icons/VSetting.vue";
 import VTransaction from "@/components/src/icons/VTransaction.vue";
+import VBook from "@/components/src/icons/VBook.vue";
 import { array, bool } from "vue-types";
 import VSidebarGroup from "@/components/VSidebarGroup/index.vue";
 import { usePage } from "@inertiajs/inertia-vue3";
@@ -17,7 +18,8 @@ const icons = {
     VSetting,
     VTag,
     VProduct,
-    VTransaction
+    VTransaction,
+    VBook
 }
 const props = defineProps({
     sidebarOpen: bool().def(false),
