@@ -35,7 +35,7 @@ const emit = defineEmits(['apply', 'clear'])
     <VFilter align="right" @apply="applyFilter" @clear="clearFilter">
         <div class="grid grid-cols-1 gap-3 px-4 pb-4 pt-1.5">
             <div>
-                <div class="text-xs font-semibold text-slate-400 uppercase mb-1">Filter by Category</div>
+                <div class="text-xs font-semibold text-slate-400 uppercase mb-1">Filter by Date</div>
                 <Datepicker v-model="filter.date" @update:modelValue="handleDateRange" range :partial-range="false"
                     :enableTimePicker="false" position="left" :clearable="false" format="dd MMMM yyyy" previewFormat="dd MMMM yyyy"
                     placeholder="Select Date Range"/>
