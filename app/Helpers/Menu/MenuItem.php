@@ -2,11 +2,6 @@
 
 namespace App\Helpers\Menu;
 
-/**
- * TODO: On the future, all menu items should have a type property. We can use
- * the type property to easy distinguish the item type and avoid guessing it by
- * they properties.
- */
 class MenuItem
 {
     /**

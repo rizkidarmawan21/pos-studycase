@@ -2,7 +2,7 @@
 
 namespace App\Helpers\Menu;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Interfaces\Menu\FilterInterface;
 
 
@@ -36,21 +36,30 @@ class ModuleAccess implements FilterInterface
     protected function isEnabled($item)
     {
         // Check if there are any permission defined for the item.
-        if (empty($item['module_id'])) {
+        if (empty($item['can'])) {
             return true;
         }
 
-        // Check if the current user can perform the configured permissions.
-        $modules = DB::table('modules')->where('status', 'active')->get();
-        $finalModules = [];
+        if (is_array($item['can'])) {
+            $return = [];
+            foreach ($item['can'] as $key => $permission) {
+                if (Auth::check() && !Auth::user()->can($permission)) {
+                    $return[$key] = false;
+                } else {
+                    $return[$key] = true;
+                }
+            }
 
-        if(isset($modules)){
-            $finalModules = $modules->pluck('id')->toArray();
-        }
-        
-        $checkingModule = array_intersect($finalModules, $item['module_id']);
-        if (is_array($item['module_id']) && count($checkingModule) < 1) {
-            return false;
+            if (in_array(true, $return)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (Auth::check() && !Auth::user()->can($item['can'])
+            ) {
+                return false;
+            }
         }
 
         return true;

@@ -9,7 +9,6 @@ import axios from "axios";
 import { string } from "vue-types";
 import { notify } from "notiwind";
 import { ref, reactive } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
 import VInput from "@/components/VInput/index.vue";
 import VButton from "@/components/VButton/index.vue";
 import { Head } from "@inertiajs/inertia-vue3";

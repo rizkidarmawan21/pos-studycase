@@ -12,7 +12,7 @@ use App\Http\Controllers\TransactionController;
 |
 */
 
-Route::controller(TransactionController::class)->prefix('transaction')->name('transaction.')->group(function () {
+Route::controller(TransactionController::class)->middleware('can:view_transaction')->prefix('transaction')->name('transaction.')->group(function () {
     Route::get('/', 'index')->name('index');
 
     // Cart Related Route
@@ -27,7 +27,7 @@ Route::controller(TransactionController::class)->prefix('transaction')->name('tr
     Route::get('{id}/print-order', 'printOrder')->name('printorder');
 });
 
-Route::controller(ReportController::class)->prefix('report')->name('report.')->group(function () {
+Route::controller(ReportController::class)->middleware('can:view_report')->prefix('report')->name('report.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('get-data', 'getData')->name('getdata');
 

@@ -43,6 +43,65 @@ class PermissionSeeder extends Seeder
                                 'label' => 'View Role Management',
                             ]
                         ]
+                    ],
+                    [
+                        'name' => 'user_management',
+                        'permission' => [
+                            [
+                                'name' => 'view_settings_user_management',
+                                'label' => 'View User Management',
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+
+            // Master Data
+            [
+                'group' => 'master_data',
+                'sub_group' => [
+                    [
+                        'name' => 'category',
+                        'permission' => [
+                            [
+                                'name' => 'view_category',
+                                'label' => 'View Category',
+                            ]
+                        ]
+                    ],
+                    [
+                        'name' => 'product',
+                        'permission' => [
+                            [
+                                'name' => 'view_product',
+                                'label' => 'View Product',
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+
+            // Core
+            [
+                'group' => 'core',
+                'sub_group' => [
+                    [
+                        'name' => 'transaction',
+                        'permission' => [
+                            [
+                                'name' => 'view_transaction',
+                                'label' => 'View Transaction',
+                            ]
+                        ]
+                    ],
+                    [
+                        'name' => 'report',
+                        'permission' => [
+                            [
+                                'name' => 'view_report',
+                                'label' => 'View Report',
+                            ]
+                        ]
                     ]
                 ]
             ],

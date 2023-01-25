@@ -12,7 +12,7 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::controller(CategoryController::class)->prefix('category')->name('category.')->group(function () {
+Route::controller(CategoryController::class)->middleware('can:view_category')->prefix('category')->name('category.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('get-data', 'getData')->name('getdata');
     Route::post('create', 'createData')->name('create');
@@ -20,7 +20,7 @@ Route::controller(CategoryController::class)->prefix('category')->name('category
     Route::delete('{id}/delete', 'deleteData')->name('delete');
 });
 
-Route::controller(ProductController::class)->prefix('product')->name('product.')->group(function () {
+Route::controller(ProductController::class)->middleware('can:view_product')->prefix('product')->name('product.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('get-data', 'getData')->name('getdata');
     Route::post('create', 'createData')->name('create');

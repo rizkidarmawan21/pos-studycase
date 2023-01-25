@@ -13,7 +13,7 @@ use App\Http\Controllers\Settings\UserManagementController;
 */
 
 Route::prefix('settings')->name('settings.')->group(function () {
-    Route::controller(RoleManagementController::class)->prefix('role')->name('role.')->group(function () {
+    Route::controller(RoleManagementController::class)->middleware('can:view_settings_role_management')->prefix('role')->name('role.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('get-data', 'getRoleList')->name('getdata');
         Route::get('add-role', 'createRolePage')->name('createpage');
@@ -23,7 +23,7 @@ Route::prefix('settings')->name('settings.')->group(function () {
         Route::delete('{id}/delete-role', 'deleteRole')->name('deleterole');
     });
 
-    Route::controller(UserManagementController::class)->prefix('user')->name('user.')->group(function () {
+    Route::controller(UserManagementController::class)->middleware('can:view_settings_user_management')->prefix('user')->name('user.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('get-data', 'getData')->name('getdata');
         Route::post('create', 'createData')->name('create');

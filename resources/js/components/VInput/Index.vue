@@ -1,6 +1,5 @@
 <script setup>
 import { string, oneOf, bool, any } from 'vue-types'
-import VTooltip from '@/components/VTooltip/index.vue';
 
 const props = defineProps({
     label: string(),
@@ -11,9 +10,7 @@ const props = defineProps({
     errorMessage: string(),
     successMessage: string(),
     isPrefix: bool().def(false),
-    required: bool().def(false),
-    tooltip: bool().def(false),
-    tooltipBg: oneOf(['dark', 'white']).def('dark'),
+    required: bool().def(false)
 })
 const emit = defineEmits(['update:modelValue'])
 const updateValue = (event) => {
@@ -24,11 +21,8 @@ const updateValue = (event) => {
 
 <template>
     <div>
-        <div class="mb-1" :class="{'flex items-center my-auto' : tooltip, 'block' : !tooltip}" v-if="label">
+        <div class="mb-1" v-if="label">
             <label class="block text-sm font-medium text-slate-600" :for="placeholder" v-if="label">{{ label }} <span class="text-rose-500" v-if="required">*</span> </label>
-            <VTooltip size="md" :bg="tooltipBg" v-if="tooltip" class="-mt-2 ml-1">
-                <slot name="tooltip"  />
-            </VTooltip>
         </div>
         <div class="relative">
             <slot name="icon" />

@@ -35,7 +35,7 @@ Route::prefix('admin')->group(function () {
             return redirect(route('dashboard.index'));
         });
 
-        Route::controller(DashboardController::class)->group(function () {
+        Route::controller(DashboardController::class)->middleware('can:view_general_dashboard')->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard.index');
         });
 

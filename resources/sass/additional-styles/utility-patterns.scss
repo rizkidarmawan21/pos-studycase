@@ -58,49 +58,23 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .form-input,
-.form-textarea,
-.form-multiselect,
-.form-select,
-.form-checkbox,
-.form-calender,
-.form-radio {
+.form-textarea {
     @apply text-sm text-slate-800 bg-white border;
 }
 
 .form-input,
-.form-textarea,
-.form-multiselect,
-.form-select,
-.form-calender,
-.form-checkbox {
+.form-textarea {
     @apply rounded;
 }
 
 .form-input,
-.form-textarea,
-.form-multiselect,
-.form-select {
+.form-textarea {
     @apply leading-5 py-2 px-3 border-slate-200 hover:border-slate-300 focus:border-indigo-300 shadow-sm;
 }
 
-.form-calender {
-    @apply leading-5 py-2 border-slate-200 hover:border-slate-300 focus:border-primary shadow-sm;
-}
-
-
 .form-input,
-.form-calender,
 .form-textarea {
     @apply placeholder-slate-400;
-}
-
-.form-select {
-    @apply pr-10;
-}
-
-.form-checkbox,
-.form-radio {
-    @apply text-blue-500 border border-slate-300;
 }
 
 /* Chrome, Safari and Opera */

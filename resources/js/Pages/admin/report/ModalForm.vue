@@ -16,7 +16,7 @@ const emit = defineEmits(['close'])
 </script>
 
 <template>
-    <VDialog :showModal="openDialog" title="Detail Transaction" @opened="openForm" @closed="closeForm" size="xl">
+    <VDialog :showModal="openDialog" title="Detail Transaction" size="xl">
         <template v-slot:close>
             <button class="text-slate-400 hover:text-slate-500" @click="$emit('close')">
                 <div class="sr-only">Close</div>

@@ -57,55 +57,6 @@ input[type=file]::file-selector-button:hover {
     background-color: #2464d1;
     border: 1px solid #2464d1;
 }
-
-.vue-tel-input {
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 0.25rem !important;
-  height: 38px !important;
-}
-
-.vue-tel-input-error {
-  border: 1px solid #f43f5e !important;
-}
-
-.vti__dropdown-list.below{
-  z-index: 11 !important;
-}
-
-.dp__select {
-    color: #4F8CF6 !important;
-}
-
-.date_error {
-    --dp-border-color: #dc3545 !important;
-}
-
-.freeze-table {
-    height: auto;
-    max-height: 400px !important;
- }
-
- .fixed-header {
-    background-color: #F8FAFC;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-    border-color: rgb(226 232 240);
-    position: sticky;
-    left: 0;
-    z-index: 2;
- }
-
- .fixed-left {
-    background: white;
-    position: sticky;
-    left: 0;
- }
-
- .header th {
-    background-color: #F8FAFC;
-    position: sticky;
-    top: 0;
- }
  
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

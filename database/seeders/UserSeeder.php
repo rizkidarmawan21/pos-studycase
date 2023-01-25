@@ -16,7 +16,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $super_admin = User::create([
+        $super_admin = User::updateOrCreate(
+        [
+            'email' => 'superadmin@pos.com'
+        ],
+        [
             'name' => 'Super Admin',
             'email' => 'superadmin@pos.com',
             'email_verified_at' => now(),
