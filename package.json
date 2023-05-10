@@ -36,6 +36,9 @@
         "vue": "^3.2.45",
         "vue-flatpickr-component": "^11.0.1",
         "vue-types": "^5.0.2",
-        "ziggy-js": "^1.5.0"
+        "ziggy-js": "^1.5.0",
+        "chart.js": "^3.5.1",
+        "chartjs-adapter-moment": "^1.0.0",
+        "moment": "^2.29.1"
     }
 }

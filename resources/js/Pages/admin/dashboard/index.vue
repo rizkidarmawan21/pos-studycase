@@ -1,24 +1,32 @@
 <script>
 export default {
-    layout: AppLayout
-}
+    layout: AppLayout,
+};
 </script>
 <script setup>
-import { Head } from "@inertiajs/inertia-vue3"
-import { array, object, string } from 'vue-types';
-import AppLayout from '@/layouts/apps.vue';
+import { Head } from "@inertiajs/inertia-vue3";
+import { computed } from "vue";
+import { array, object, string } from "vue-types";
+import AppLayout from "@/layouts/apps.vue";
+import WelcomeBanner from "@/partials/dashboard/WelcomeBanner.vue";
+import DashboardCard from "@/partials/dashboard/DashboardCard1.vue";
+import { usePage } from "@inertiajs/inertia-vue3";
+
+const user = computed(() => usePage().props.value.admin_data);
 
 const props = defineProps({
     filter: object(),
     query: array(),
     modules: array(),
-    title: string()
-})
+    title: string(),
+});
 </script>
 
 <template>
     <Head :title="props.title" />
-    <div class="mb-4 sm:mb-6 flex justify-between items-center">
-        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Admin</h1>
+    <WelcomeBanner :user="user" />
+
+    <div class="grid grid-cols-12 gap-6">
+        <DashboardCard />
     </div>
 </template>
