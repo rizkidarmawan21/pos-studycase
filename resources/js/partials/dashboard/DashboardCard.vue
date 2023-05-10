@@ -11,7 +11,7 @@ const props = defineProps({
     value: string().isRequired,
     datasets: array().isRequired,
     isRupiah: bool(),
-    isAnalytic: bool()
+    isAnalytic: bool(),
 });
 
 const chartData = ref({
@@ -40,28 +40,18 @@ const chartData = ref({
     <div
         class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200"
     >
-        <div class="px-5 pt-5">
-            <h2 class="text-lg font-semibold text-slate-800 mb-2">
+        <div class="px-5 pt-5 text-center">
+            <h2 class="text-3xl font-semibold text-slate-800 mt-2 mb-2">
                 {{ title }}
             </h2>
             <!-- <div class="text-xs font-semibold text-slate-400 uppercase mb-1">
                 Sales
             </div> -->
-            <div class="flex items-start">
-                <div class="text-3xl font-bold text-slate-800 mr-2">
-                    {{ isRupiah ? 'Rp.' : '' }} {{ value }}
+            <div class="text-center mt-4">
+                <div class="text-8xl font-bold text-slate-800 mr-2">
+                    {{ isRupiah ? "Rp." : "" }} {{ value }}
                 </div>
-                <!-- <div
-                    class="text-sm font-semibold text-white px-1.5 bg-emerald-500 rounded-full"
-                >
-                    +49%
-                </div> -->
             </div>
-        </div>
-        <!-- Chart built with Chart.js 3 -->
-        <div class="grow" >
-            <!-- Change the height attribute to adjust the chart height -->
-            <LineChart v-if="isAnalytic" :data="chartData" :isRupiah="isRupiah" width="389" height="128" />
         </div>
     </div>
 </template>

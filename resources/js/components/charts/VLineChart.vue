@@ -30,7 +30,7 @@ Chart.register(
 );
 
 export default {
-    props: ["data", "width", "height"],
+    props: ["isRupiah", "data", "width", "height"],
     setup(props) {
         const canvas = ref(null);
         let chart = null;
@@ -67,7 +67,9 @@ export default {
                             callbacks: {
                                 title: () => false, // Disable tooltip title
                                 label: (context) =>
-                                    formatValue(context.parsed.y),
+                                    props.isRupiah
+                                        ? formatValue(context.parsed.y)
+                                        : context.parsed.y,
                             },
                         },
                         legend: {
