@@ -38,7 +38,7 @@ class HandleInertiaRequests extends Middleware
      * @return array
      */
     public function share(Request $request): array
-    {;
+    {
         // Get Modules
         $sidebarMenu = new GetSidebarMenuAction();
         $modules = $sidebarMenu->handle();
