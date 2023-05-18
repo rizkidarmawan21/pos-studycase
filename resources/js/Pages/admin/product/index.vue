@@ -215,8 +215,8 @@ onMounted(() => {
                     <p>{{ data.name }}</p>
                     <p>Category: {{ data.category_name }}</p>
                 </td>
-                <td class="px-4 whitespace-nowrap h-16"> {{ data.description }} </td>
-                <td class="px-4 whitespace-nowrap h-16"> Rp{{ data.price_formatted }} </td>
+                <td class="px-4 h-16"> {{ data.description }} </td>
+                <td class="px-4 whitespace-nowrap h-16 "> Rp {{ data.price_formatted }} </td>
                 <td class="px-4 whitespace-nowrap h-16"> {{ data.stock }} </td>
                 <td class="px-4 whitespace-nowrap h-16 text-right">
                     <VDropdownEditMenu class="relative inline-flex r-0" :align="'right'"

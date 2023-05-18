@@ -26,7 +26,7 @@ import {
 import "chartjs-adapter-moment";
 
 // Import utilities
-import { tailwindConfig, formatValue } from "@/utils/utils.js";
+import { tailwindConfig, formatValue } from "@/utils/Utils.js";
 
 Chart.register(
     BarController,

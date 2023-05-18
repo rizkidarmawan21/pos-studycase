@@ -1,38 +1,15 @@
 <script setup>
 import { ref } from "vue";
-import { array, bool, string } from "vue-types";
+import { any, array, bool, string } from "vue-types";
 import VIcon from "@/components/src/icons/VIcon.vue";
 import LineChart from "@/components/charts/VLineChart.vue";
-import { tailwindConfig, hexToRGB } from "@/utils/utils.js";
+import { tailwindConfig, hexToRGB } from "@/utils/Utils.js";
 
 const props = defineProps({
     title: string().isRequired,
-    labels: array().isRequired,
-    value: string().isRequired,
-    datasets: array().isRequired,
+    value: any().isRequired,
     isRupiah: bool(),
     isAnalytic: bool(),
-});
-
-const chartData = ref({
-    labels: props.labels,
-    datasets: [
-        // Indigo line
-        {
-            data: props.datasets,
-            fill: true,
-            backgroundColor: `rgba(${hexToRGB(
-                tailwindConfig().theme.colors.blue[500]
-            )}, 0.08)`,
-            borderColor: tailwindConfig().theme.colors.indigo[500],
-            borderWidth: 2,
-            tension: 0,
-            pointRadius: 0,
-            pointHoverRadius: 3,
-            pointBackgroundColor: tailwindConfig().theme.colors.indigo[500],
-            clip: 20,
-        },
-    ],
 });
 </script>
 

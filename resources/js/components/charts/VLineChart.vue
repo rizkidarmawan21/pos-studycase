@@ -17,7 +17,7 @@ import {
 import "chartjs-adapter-moment";
 
 // Import utilities
-import { tailwindConfig, formatValue } from "@/utils/utils.js";
+import { tailwindConfig, formatValue } from "@/utils/Utils.js";
 
 Chart.register(
     LineController,
@@ -26,7 +26,8 @@ Chart.register(
     PointElement,
     LinearScale,
     TimeScale,
-    Tooltip
+    Tooltip,
+    
 );
 
 export default {
@@ -56,7 +57,7 @@ export default {
                         x: {
                             type: "time",
                             time: {
-                                parser: "MM-DD-YYYY",
+                                parser: "YYYY-DD",
                                 unit: "month",
                             },
                             display: false,
@@ -81,6 +82,7 @@ export default {
                         mode: "nearest",
                     },
                     maintainAspectRatio: false,
+                    responsive: true,
                     resizeDelay: 200,
                 },
             });

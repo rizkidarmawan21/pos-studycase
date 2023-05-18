@@ -35,6 +35,9 @@ Route::prefix('admin')->group(function () {
 
         Route::controller(DashboardController::class)->middleware('can:view_general_dashboard')->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard.index');
+            Route::get('/dashboard/get_total_revenue', 'get_total_revenue')->name('dashboard.gettotalrevenue');
+            Route::get('/dashboard/get_total_product', 'get_total_products')->name('dashboard.gettotalproducts');
+            Route::get('/dashboard/get_most_sales_product', 'most_sales_product')->name('dashboard.getmostsalesproduct');
         });
 
         require __DIR__ . '/admin/settings.php';

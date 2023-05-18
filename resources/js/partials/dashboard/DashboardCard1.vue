@@ -1,19 +1,20 @@
 <script setup>
 import { ref } from "vue";
-import { array, bool, string } from "vue-types";
-import VIcon from "@/components/src/icons/VIcon.vue";
-import LineChart from "@/components/charts/VLineChart.vue";
-import { tailwindConfig, hexToRGB } from "@/utils/utils.js";
+import { any, array, bool, object, string } from "vue-types";
+import LineChart from "@/components/charts/LineChart.vue";
+import { tailwindConfig, hexToRGB } from "@/utils/Utils.js";
 
 const props = defineProps({
     title: string().isRequired,
+    value: any().isRequired,
     labels: array().isRequired,
-    value: string().isRequired,
     datasets: array().isRequired,
     isRupiah: bool(),
-    isAnalytic: bool()
+    isAnalytic: bool(),
 });
 
+console.log(props.title)
+console.log(props.labels)
 const chartData = ref({
     labels: props.labels,
     datasets: [
@@ -26,7 +27,7 @@ const chartData = ref({
             )}, 0.08)`,
             borderColor: tailwindConfig().theme.colors.indigo[500],
             borderWidth: 2,
-            tension: 0,
+            tension: 0.3,
             pointRadius: 0,
             pointHoverRadius: 3,
             pointBackgroundColor: tailwindConfig().theme.colors.indigo[500],
@@ -37,31 +38,21 @@ const chartData = ref({
 </script>
 
 <template>
-    <div
-        class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200"
-    >
+    <div class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200" >
         <div class="px-5 pt-5">
             <h2 class="text-lg font-semibold text-slate-800 mb-2">
                 {{ title }}
             </h2>
-            <!-- <div class="text-xs font-semibold text-slate-400 uppercase mb-1">
-                Sales
-            </div> -->
             <div class="flex items-start">
                 <div class="text-3xl font-bold text-slate-800 mr-2">
-                    {{ isRupiah ? 'Rp.' : '' }} {{ value }}
+                    {{ isRupiah ? "Rp." : "" }} {{ value }}
                 </div>
-                <!-- <div
-                    class="text-sm font-semibold text-white px-1.5 bg-emerald-500 rounded-full"
-                >
-                    +49%
-                </div> -->
             </div>
         </div>
         <!-- Chart built with Chart.js 3 -->
-        <div class="grow" >
+        <div class="grow">
             <!-- Change the height attribute to adjust the chart height -->
-            <LineChart v-if="isAnalytic" :data="chartData" :isRupiah="isRupiah" width="389" height="128" />
+            <LineChart :data="chartData" />
         </div>
     </div>
 </template>
