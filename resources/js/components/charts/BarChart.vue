@@ -38,6 +38,7 @@ Chart.register(
 );
 
 export default {
+    
     props: ["data", "width", "height"],
     setup(props) {
         const canvas = ref(null);
@@ -71,7 +72,7 @@ export default {
                         x: {
                             type: "time",
                             time: {
-                                parser: "MM-DD-YYYY",
+                                parser: "YYYY-MM",
                                 unit: "month",
                                 displayFormats: {
                                     month: "MMM YY",

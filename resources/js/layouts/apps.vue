@@ -24,8 +24,6 @@ const logoutSubmit = async () => {
     })
 };
 
-console.log(usePage().props.value)
-
 const props = defineProps({
     modules: array()
 })

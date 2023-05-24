@@ -1,15 +1,10 @@
 <script setup>
-import { ref } from "vue";
 import { any, array, bool, string } from "vue-types";
-import VIcon from "@/components/src/icons/VIcon.vue";
-import LineChart from "@/components/charts/VLineChart.vue";
-import { tailwindConfig, hexToRGB } from "@/utils/Utils.js";
 
 const props = defineProps({
     title: string().isRequired,
     value: any().isRequired,
     isRupiah: bool(),
-    isAnalytic: bool(),
 });
 </script>
 

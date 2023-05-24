@@ -1,73 +1,92 @@
-<script setup>
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-} from "chart.js";
-import { Line } from "vue-chartjs";
-import { tailwindConfig, formatValue } from "@/utils/Utils.js";
-import { array, bool } from "vue-types";
+<template>
+    <canvas ref="canvas" :data="data" :width="width" :height="height"></canvas>
+</template>
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
+<script>
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import {
+    Chart,
+    LineController,
     LineElement,
-    Title,
+    Filler,
+    PointElement,
+    LinearScale,
+    TimeScale,
     Tooltip,
-    Legend
+    CategoryScale,
+} from "chart.js";
+import "chartjs-adapter-moment";
+
+// Import utilities
+import { tailwindConfig, formatValue } from "@/utils/Utils.js";
+
+Chart.register(
+    LineController,
+    LineElement,
+    Filler,
+    PointElement,
+    LinearScale,
+    TimeScale,
+    Tooltip,
+    CategoryScale
 );
 
-const props = defineProps({
-    isRupiah: bool(),
-    data: array(),
-});
+export default {
+    props: ["data", "width", "height"],
+    setup(props) {
+        const canvas = ref(null);
+        let chart = null;
 
-const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    resizeDelay: 200,
-    layout: {
-        padding: 20,
-    },
-    scales: {
-        y: {
-            display: false,
-            beginAtZero: true,
-        },
-        x: {
-            display: false,
-        },
-    },
-    chartArea: {
-        backgroundColor: tailwindConfig().theme.colors.slate[50],
-    },
-    plugins: {
-        tooltip: {
-            callbacks: {
-                title: () => false, // Disable tooltip title
-                label: (context) =>
-                    props.isRupiah
-                        ? formatValue(context.parsed.y)
-                        : context.parsed.y,
-            },
-        },
-        legend: {
-            display: false,
-        },
-    },
-    interaction: {
-        intersect: false,
-        mode: "nearest",
+        onMounted(() => {
+            const ctx = canvas.value;
+            chart = new Chart(ctx, {
+                type: "line",
+                data: props.data,
+                options: {
+                    chartArea: {
+                        backgroundColor:
+                            tailwindConfig().theme.colors.slate[50],
+                    },
+                    layout: {
+                        padding: 20,
+                    },
+                    scales: {
+                        y: {
+                            display: false,
+                            beginAtZero: true,
+                        },
+                        x: {
+                            display: false,
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: "nearest",
+                    },
+                    maintainAspectRatio: false,
+                    responsive: true,
+                },
+            });
+        });
+
+        watch(
+            () => props.data,
+            (newData) => {
+                chart.destroy();
+                chart.data = newData;
+                chart.update();
+            }
+        );
+
+        onUnmounted(() => chart.destroy());
+        return {
+            canvas,
+        };
     },
 };
 </script>
-
-<template>
-    <Line :data="props.data" :options="options" />
-</template>
