@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CategoryController;
 
-Route::controller(ProductController::class)->prefix('product')->group(function () {
+Route::controller(CategoryController::class)->prefix('category')->group(function () {
     Route::get('get-data', 'getData')->name('getdata');
     Route::post('create', 'createData')->name('create');
     Route::post('{id}/update', 'updateData')->name('update');
