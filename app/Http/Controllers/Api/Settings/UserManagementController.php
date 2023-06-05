@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
+use App\Http\Controllers\ApiBaseController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Services\Api\Settings\User\UserManagementService;
 use App\Http\Requests\Api\Settings\User\CreateUserRequest;
 use App\Http\Requests\Api\Settings\User\UpdateUserRequest;
 use App\Http\Resources\Api\Settings\User\UserListResource;
 use App\Http\Resources\Api\Settings\User\SubmitUserResource;
 
-class UserManagementController extends Controller
+class UserManagementController extends ApiBaseController
 {
     public function __construct(UserManagementService $userManagementService)
     {

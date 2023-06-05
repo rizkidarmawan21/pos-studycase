@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Api\Product;
 
 use App\Http\Requests\ApiBaseRequest;
-use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProductRequest extends ApiBaseRequest
 {

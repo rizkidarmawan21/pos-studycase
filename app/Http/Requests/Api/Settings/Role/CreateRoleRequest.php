@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Settings\Role;
+namespace App\Http\Requests\Api\Settings\Role;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiBaseRequest;
 
-class CreateRoleRequest extends FormRequest
+class CreateRoleRequest extends ApiBaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
