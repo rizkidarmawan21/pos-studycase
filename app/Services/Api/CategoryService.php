@@ -16,6 +16,10 @@ class CategoryService
             $q->where('name', 'like', '%' . $search . '%');
         });
 
+        $query->when(request('id', false), function ($q) {
+            $q->where('id', request('id'));
+        });
+
         return $query->paginate(10);
     }
 

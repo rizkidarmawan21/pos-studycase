@@ -28,4 +28,5 @@ Route::prefix('authentication')->group(function () {
 Route::middleware('JwtMiddleware')->group(function () {
     require __DIR__ . '/api/admin/products.php';
     require __DIR__ . '/api/admin/categories.php';
+    require __DIR__ . '/api/admin/settings/users.php';
 });
