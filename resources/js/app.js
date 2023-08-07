@@ -7,6 +7,7 @@ import route from "ziggy-js";
 import Notifications from "notiwind";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import "@/components/charts/ChartjsConfig.js";
 
 // Font Awesome Setup
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -29,7 +30,7 @@ createInertiaApp({
             .use(plugin)
             .use(Notifications)
             .component("font-awesome-icon", FontAwesomeIcon)
-            .component('Datepicker', Datepicker)
+            .component("Datepicker", Datepicker)
             .mount(el);
     },
 });
