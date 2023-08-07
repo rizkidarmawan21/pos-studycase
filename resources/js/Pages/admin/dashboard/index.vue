@@ -24,6 +24,7 @@ const user = computed(() => usePage().props.value.admin_data);
 const total_products = ref(0);
 const most_sales_products = ref([]);
 const filter = ref({});
+const filterData = ref({});
 
 const isLoading = ref(true);
 const props = defineProps({
@@ -33,10 +34,23 @@ const props = defineProps({
 
 const applyFilter = (data) => {
     filter.value = data
+    isLoading.value = true
+
+    handleFilter()
 }
 
 const clearFilter = (data) => {
-    filter.value = {}
+    filter.value = data
+    isLoading.value = true
+
+    handleFilter()
+}
+
+const handleFilter = () => {
+    filterData.value = {
+        start_date: filter.value.start_date,
+        end_date: filter.value.end_date,
+    }
 }
 
 const getTotalProducts = debounce(async () => {
@@ -97,14 +111,13 @@ onMounted(() => {
     <div class="mb-4 sm:mb-6 flex justify-end">
         <!-- Filter -->
         <VFilter @apply="applyFilter" @clear="clearFilter" />
-    
     </div>
-
     <div class="grid grid-cols-12 gap-6">
-        <ChartRevenue v-bind:filter="filter" />
-        <ChartTransaction />
+       
+        <ChartRevenue :filter="filterData" />
+        <ChartTransaction :filter="filterData" />
         <DashboardCard title="Total Product" :value="total_products" />
-        <ChartAnalytic />
+        <!-- <ChartAnalytic /> -->
         <DashboardCardTable :products="most_sales_products" />
     </div>
 </template>

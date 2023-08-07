@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, watchEffect } from "vue";
 import { object } from "vue-types";
 import { notify } from "notiwind";
 import LineChart from "@/components/charts/LineChart.vue";
@@ -15,6 +15,7 @@ const props = defineProps({
 const total_revenue = ref(0);
 const loaded = ref(false);
 const isLoading = ref(true);
+const filter = ref({});
 
 const chartData = ref({
     labels: [],
@@ -42,8 +43,8 @@ const query = debounce(async () => {
     axios
         .get(route("dashboard.gettotalrevenue"), {
             params: {
-                start_date: props.filter.start_date,
-                end_date: props.filter.end_date,
+                start_date: filter.value.start_date,
+                end_date: filter.value.end_date,
             },
         })
         .then((res) => {
@@ -66,23 +67,21 @@ const query = debounce(async () => {
         .finally(() => ((loaded.value = true), (isLoading.value = false)));
 }, 500);
 
-watch(
-    () => props.filter,
-    () => {
-        query();
-        console.log(chartData.value);
-    }
-);
+
+watchEffect(() => {
+    isLoading.value = true;
+    filter.value = props.filter;
+    query();
+});
+
 onMounted(() => {
     query();
-    console.log(props.filter);
 });
 </script>
 
 <template>
     <div
-        class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200"
-    >
+        class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200">
         <div v-if="isLoading" class="px-5 pt-5">
             <div class="h-[100%] overflow-hidden my-2">
                 <VLoading />

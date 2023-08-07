@@ -66,7 +66,7 @@ export default {
                             },
                             ticks: {
                                 maxTicksLimit: 5,
-                                callback: (value) => formatValue(value),
+                                callback: (value) => value,
                             },
                         },
                         x: {
