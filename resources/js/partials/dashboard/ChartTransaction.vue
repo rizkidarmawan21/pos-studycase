@@ -22,7 +22,7 @@ const chartData = ref({
     datasets: [
         // Indigo line
         {
-            label: "Total Revenue",
+            label: "Total Transaction",
             data: [],
             fill: true,
             backgroundColor: `rgba(${hexToRGB(

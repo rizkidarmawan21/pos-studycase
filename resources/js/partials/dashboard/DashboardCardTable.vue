@@ -50,7 +50,7 @@ const props = defineProps({
                         <!-- Row -->
                         <tr v-for="(data, index) in products" :key="index">
                             <td class="p-2">
-                                <div class="">
+                                <div class="text-center">
                                     {{ data.name }}
                                 </div>
                             </td>
