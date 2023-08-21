@@ -17,6 +17,7 @@ Route::controller(TransactionController::class)->middleware('can:view_transactio
 
     // Cart Related Route
     Route::get('get-cart-data', 'getCartData')->name('getcartdata');
+    Route::get('get-customer-data', 'getCustomerData')->name('getcustomerdata');
     Route::get('get-product-data', 'getProductData')->name('getproductdata');
     Route::post('add-to-cart', 'addToCart')->name('addtocart');
     Route::put('{id}/update-qty', 'updateQtyCart')->name('updateqtycart');

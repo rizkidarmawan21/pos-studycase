@@ -62,16 +62,16 @@ const props = defineProps({
 
 const getCartData = debounce(async () => {
     axios.get(route('transaction.getcartdata'))
-    .then((res) => {
-        query.value = res.data.data
-        grandTotal.value = res.data.grand_total
-    }).catch((res) => {
-        notify({
-            type: "error",
-            group: "top",
-            text: res.response.data.message
-        }, 2500)
-    }).finally(() => cartLoading.value = false)
+        .then((res) => {
+            query.value = res.data.data
+            grandTotal.value = res.data.grand_total
+        }).catch((res) => {
+            notify({
+                type: "error",
+                group: "top",
+                text: res.response.data.message
+            }, 2500)
+        }).finally(() => cartLoading.value = false)
 }, 500);
 
 const successSubmit = () => {
@@ -88,6 +88,7 @@ const closeModalForm = () => {
     itemSelected.value = ref({})
     openModalForm.value = false
 }
+
 
 const alertDelete = (data) => {
     itemSelected.value = data
@@ -185,13 +186,12 @@ onMounted(() => {
 </script>
 
 <template>
-
     <Head :title="props.title" />
     <VBreadcrumb :routes="breadcrumb" />
-    
+
     <div class="flex flex-col space-y-3 md:flex-row md:space-x-3 md:space-y-0">
         <!-- Add Cart Component -->
-        <VAddCart :additional="additional" @successSubmit="successSubmit"/>
+        <VAddCart :additional="additional" @successSubmit="successSubmit" />
 
         <div class="w-full md:w-2/3">
             <!-- Grand Total -->
@@ -223,7 +223,7 @@ onMounted(() => {
             <div class="border rounded bg-white drop-shadow-sm p-4">
                 <!-- Information Section -->
                 <section class="w-full sm:w-1/2">
-                    <VInput :placeholder="user.name" label="Cashier" :disabled="true"/>
+                    <VInput :placeholder="user.name" label="Cashier" :disabled="true" />
                 </section>
 
                 <!-- Cart Table Section -->
@@ -258,7 +258,8 @@ onMounted(() => {
                                         </div>
                                     </li>
                                     <li class="cursor-pointer hover:bg-slate-100">
-                                        <div class="flex justify-between items-center space-x-2 p-3" @click="alertDelete(data)">
+                                        <div class="flex justify-between items-center space-x-2 p-3"
+                                            @click="alertDelete(data)">
                                             <span>
                                                 <VTrash color="danger" />
                                             </span>
@@ -274,11 +275,12 @@ onMounted(() => {
                 <!-- Submit Transaction Section -->
                 <section class="mt-5 space-y-3" v-if="query.length > 0 && !cartLoading">
                     <div class="flex justify-end">
-                        <VInput placeholder="Insert Cash (Rp)" label="Pay" :required="true" v-model="form.cash" :errorMessage="formError.cash"
-                            @update:modelValue="formError.cash = '', calculateChange()" type="number" />
+                        <VInput placeholder="Insert Cash (Rp)" label="Pay" :required="true" v-model="form.cash"
+                            :errorMessage="formError.cash" @update:modelValue="formError.cash = '', calculateChange()"
+                            type="number" />
                     </div>
                     <div class="text-end">
-                        <VButton label="Pay Order" type="primary" :disabled="!form.cash" @click="payOrder"/>
+                        <VButton label="Pay Order" type="primary" :disabled="!form.cash" @click="payOrder" />
                     </div>
                 </section>
             </div>
@@ -286,7 +288,8 @@ onMounted(() => {
         <VAlert :open-dialog="openAlert" @closeAlert="closeAlert" @submitAlert="deleteProductFromCart" type="danger"
             :headerLabel="alertData.headerLabel" :content-label="alertData.contentLabel" :close-label="alertData.closeLabel"
             :submit-label="alertData.submitLabel" />
-        <VModalForm :data="itemSelected" :open-dialog="openModalForm" @close="closeModalForm"
-            @successUpdate="successSubmit" :additional="additional" />
+        <VModalForm :data="itemSelected" :open-dialog="openModalForm" @close="closeModalForm" @successUpdate="successSubmit"
+            :additional="additional" />
+       
     </div>
 </template>
