@@ -45,7 +45,7 @@ const pagination = ref({
 })
 const itemSelected = ref({})
 const openModalForm = ref(false)
-const heads = ["Invoice", "Date", "Total", ""]
+const heads = ["Invoice", "Customer", "Date", "Total", ""]
 const isLoading = ref(true)
 
 const props = defineProps({
@@ -119,14 +119,12 @@ onMounted(() => {
 </script>
 
 <template>
-
     <Head :title="props.title" />
     <VBreadcrumb :routes="breadcrumb" />
     <div class="mb-4 sm:mb-6 flex justify-between items-center">
         <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Report</h1>
     </div>
-    <div class="bg-white shadow-lg rounded-sm border border-slate-200"
-        :class="isLoading && 'min-h-[40vh] sm:min-h-[50vh]'">
+    <div class="bg-white shadow-lg rounded-sm border border-slate-200" :class="isLoading && 'min-h-[40vh] sm:min-h-[50vh]'">
         <header class="block justify-between items-center sm:flex py-6 px-4">
             <h2 class="font-semibold text-slate-800">
                 All Transactions <span class="text-slate-400 !font-medium ml">{{ pagination.total }}</span>
@@ -155,6 +153,7 @@ onMounted(() => {
             </tr>
             <tr v-for="(data, index) in query" :key="index" v-else>
                 <td class="px-4 whitespace-nowrap h-16"> {{ data.invoice_code }} </td>
+                <td class="px-4 whitespace-nowrap h-16"> {{ data.customer.name}} </td>
                 <td class="px-4 whitespace-nowrap h-16"> {{ data.created_at }} </td>
                 <td class="px-4 whitespace-nowrap h-16"> Rp{{ data.grand_total_formatted }} </td>
                 <td class="px-4 whitespace-nowrap h-16 text-right">
@@ -176,5 +175,5 @@ onMounted(() => {
             <VPagination :pagination="pagination" @next="nextPaginate" @previous="previousPaginate" />
         </div>
     </div>
-    <VModalForm :data="itemSelected" :open-dialog="openModalForm" @close="closeModalForm"/>
+    <VModalForm :data="itemSelected" :open-dialog="openModalForm" @close="closeModalForm" />
 </template>

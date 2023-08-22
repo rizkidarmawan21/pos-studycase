@@ -6,7 +6,7 @@ import { ref, onMounted } from "vue";
 import VInput from '@/components/VInput/index.vue';
 import VSelect from '@/components/VSelect/index.vue';
 import VButton from '@/components/VButton/index.vue';
-import VModalAddCustomer from './ModalAddCustomer.vue';
+
 
 const props = defineProps({
     additional: object().def({})
@@ -17,7 +17,6 @@ const emit = defineEmits(['successSubmit'])
 const form = ref({})
 const formError = ref({})
 const categorySelectHandle = ref()
-const customerOptions = ref([])
 const productOptions = ref([])
 const productPlaceholder = ref('Select Product')
 const productSelectHandle = ref()
@@ -43,33 +42,7 @@ const getProductPlaceholder = () => {
     }
 }
 
-const handleAddModalForm = () => {
-    openModalAddCustomer.value = true
-}
 
-const successSubmitCustomer = (data) => {
-    form.value.customer_id = data.data.id
-    openModalAddCustomer.value = false
-    getCustomer()
-}
-
-
-const closeModaAddCustomer = () => {
-    openModalAddCustomer.value = false
-}
-
-const getCustomer = async () => {
-    axios.get(route('transaction.getcustomerdata'))
-        .then((res) => {
-            customerOptions.value = res.data
-        }).catch((res) => {
-            notify({
-                type: "error",
-                group: "top",
-                text: res.response.data.message
-            }, 2500)
-        })
-}
 
 const getProduct = async () => {
     axios.get(route('transaction.getproductdata'), {
@@ -129,7 +102,6 @@ const submit = async () => {
 }
 
 onMounted(() => {
-    getCustomer();
     getProduct();
 });
 </script>
@@ -137,12 +109,6 @@ onMounted(() => {
 <template>
     <div class="w-full md:w-1/3 rounded-lg bg-white px-4 py-6 border drop-shadow-sm h-fit">
         <div class="grid grid-cols-1 gap-3">
-            <VSelect placeholder="Select Customer" v-model="form.customer_id" :options="customerOptions"
-                label="Customer" :errorMessage="formError.customer_id" ref="customerSelectHandle" />
-            <span>
-                <label class="block text-sm font-medium text-gray-400 -mt-2 cursor-pointer" @click="handleAddModalForm">Add
-                    New Customer ?</label>
-            </span>
             <VSelect placeholder="Select Category" v-model="form.category_id" :options="additional.category_list"
                 label="Category" :errorMessage="formError.category_id" @update:modelValue="categorySelected"
                 ref="categorySelectHandle" />
@@ -156,6 +122,5 @@ onMounted(() => {
             <VButton :is-loading="isLoading" label="Add to Cart" type="primary" @click="submit" />
         </div>
     </div>
-    <VModalAddCustomer :open-dialog="openModalAddCustomer" @close="closeModaAddCustomer"
-        @successSubmit="successSubmitCustomer" />
+    
 </template>

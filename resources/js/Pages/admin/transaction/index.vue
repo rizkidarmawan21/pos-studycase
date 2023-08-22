@@ -13,6 +13,7 @@ import AppLayout from '@/layouts/apps.vue';
 import debounce from "@/composables/debounce"
 import number_format from "@/composables/formatting"
 import VInput from '@/components/VInput/index.vue';
+import VSelect from '@/components/VSelect/index.vue';
 import VDropdownEditMenu from '@/components/VDropdownEditMenu/index.vue';
 import VDataTable from '@/components/VDataTable/index.vue';
 import VBreadcrumb from '@/components/VBreadcrumb/index.vue';
@@ -23,6 +24,7 @@ import VEdit from '@/components/src/icons/VEdit.vue';
 import VTrash from '@/components/src/icons/VTrash.vue';
 import VAddCart from './addCart.vue';
 import VModalForm from './ModalForm.vue';
+import VModalAddCustomer from './ModalAddCustomer.vue';
 
 const form = ref({})
 const formError = ref({})
@@ -50,6 +52,8 @@ const alertData = reactive({
 const itemSelected = ref({})
 const openAlert = ref(false)
 const openModalForm = ref(false)
+const openModalAddCustomer = ref(false)
+const customerOptions = ref([])
 const cartHeads = ["Product Name", "Price", "Qty", "Sub Total", ""]
 const cartLoading = ref(true)
 const changeLoading = ref(true)
@@ -59,6 +63,19 @@ const props = defineProps({
     title: string(),
     additional: object(),
 })
+
+const getCustomer = async () => {
+    axios.get(route('transaction.getcustomerdata'))
+        .then((res) => {
+            customerOptions.value = res.data
+        }).catch((res) => {
+            notify({
+                type: "error",
+                group: "top",
+                text: res.response.data.message
+            }, 2500)
+        })
+}
 
 const getCartData = debounce(async () => {
     axios.get(route('transaction.getcartdata'))
@@ -79,9 +96,19 @@ const successSubmit = () => {
     getCartData()
 }
 
+const successSubmitCustomer = (data) => {
+    form.value.customer_id = data.data.id
+    openModalAddCustomer.value = false
+    getCustomer()
+}
+
 const handleEditQty = (data) => {
     itemSelected.value = data
     openModalForm.value = true
+}
+
+const handleAddModalForm = () => {
+    openModalAddCustomer.value = true
 }
 
 const closeModalForm = () => {
@@ -89,6 +116,9 @@ const closeModalForm = () => {
     openModalForm.value = false
 }
 
+const closeModaAddCustomer = () => {
+    openModalAddCustomer.value = false
+}
 
 const alertDelete = (data) => {
     itemSelected.value = data
@@ -128,7 +158,8 @@ const payOrder = async () => {
     axios.post(route('transaction.createorder', {
         'cash': form.value.cash,
         'grand_total': grandTotal.value,
-        'change': change.value
+        'change': change.value,
+        'customer_id': form.value.customer_id
     })
     ).then((res) => {
         notify({
@@ -181,6 +212,7 @@ const calculateChange = () => {
 };
 
 onMounted(() => {
+    getCustomer();
     getCartData();
 });
 </script>
@@ -275,12 +307,21 @@ onMounted(() => {
                 <!-- Submit Transaction Section -->
                 <section class="mt-5 space-y-3" v-if="query.length > 0 && !cartLoading">
                     <div class="flex justify-end">
-                        <VInput placeholder="Insert Cash (Rp)" label="Pay" :required="true" v-model="form.cash"
-                            :errorMessage="formError.cash" @update:modelValue="formError.cash = '', calculateChange()"
-                            type="number" />
+                        <div class="w-64">
+                            <VSelect placeholder="Select Customer" v-model="form.customer_id" :required="true"
+                                :options="customerOptions" label="Customer" :errorMessage="formError.customer_id" />
+                            <span>
+                                <label class="block text-xs mt-1 font-medium text-gray-400 cursor-pointer"
+                                    @click="handleAddModalForm"> Add New Customer ?</label>
+                            </span>
+                            <VInput placeholder="Insert Cash (Rp)" label="Pay" :required="true" v-model="form.cash"
+                                :errorMessage="formError.cash" @update:modelValue="formError.cash = '', calculateChange()"
+                                type="number" />
+                        </div>
                     </div>
                     <div class="text-end">
-                        <VButton label="Pay Order" type="primary" :disabled="!form.cash" @click="payOrder" />
+                        <VButton label="Pay Order" type="primary" :disabled="(!form.cash || !form.customer_id)"
+                            @click="payOrder" />
                     </div>
                 </section>
             </div>
@@ -290,6 +331,7 @@ onMounted(() => {
             :submit-label="alertData.submitLabel" />
         <VModalForm :data="itemSelected" :open-dialog="openModalForm" @close="closeModalForm" @successUpdate="successSubmit"
             :additional="additional" />
-       
+        <VModalAddCustomer :open-dialog="openModalAddCustomer" @close="closeModaAddCustomer"
+            @successSubmit="successSubmitCustomer" />
     </div>
 </template>
