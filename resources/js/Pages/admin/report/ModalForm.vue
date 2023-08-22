@@ -51,6 +51,35 @@ const emit = defineEmits(['close'])
                 </div>
             </div>
 
+            <!-- Customer Info -->
+            <div class="font-semibold text-slate-800 text-base my-4">Customer Info</div>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <div class="font-medium text-sm text-slate-600 mb-1">Name</div>
+                    <div class="font-normal text-sm text-slate-500">{{ data.customer?.name ?? "-" }}</div>
+                </div>
+                <div>
+                    <div class="font-medium text-sm text-slate-600 mb-1">Email</div>
+                    <div class="font-normal text-sm text-slate-500">{{ data.customer?.email ?? '-' }}</div>
+                </div>
+                <div>
+                    <div class="font-medium text-sm text-slate-600 mb-1">Phone Number</div>
+                    <div class="font-normal text-sm text-slate-500">{{ data.customer?.phone }}</div>
+                </div>
+                <div>
+                    <div class="font-medium text-sm text-slate-600 mb-1">Address</div>
+                    <div class="font-normal text-sm text-slate-500">{{ data.customer?.address }}</div>
+                </div>
+                <div>
+                    <div class="font-medium text-sm text-slate-600 mb-1">City</div>
+                    <div class="font-normal text-sm text-slate-500">{{ data.customer?.city ?? '-' }}</div>
+                </div>
+                <div>
+                    <div class="font-medium text-sm text-slate-600 mb-1">Zip Code</div>
+                    <div class="font-normal text-sm text-slate-500">{{ data.customer?.zip_code ?? '-' }}</div>
+                </div>
+            </div>
+
             <!-- List Product -->
             <div class="font-semibold text-slate-800 text-base my-4">List Product</div>
             <VDataTable :heads="heads" wrapperClass="!px-0">

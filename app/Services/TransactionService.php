@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Cart;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
@@ -82,7 +83,7 @@ class TransactionService
     public function payOrder($request)
     {
         // Check If Order Valid
-        if($request->cash < $request->grand_total) {
+        if ($request->cash < $request->grand_total) {
             throw new \Exception('Cash must be greater than grand total');
         }
 
@@ -95,12 +96,16 @@ class TransactionService
             $rand = mt_rand(0, $max);
             $random .= $characters[$rand];
         }
-        $invoice_code = "POS-".$random;
+        $invoice_code = "POS-" . $random;
 
         // Create Transaction
-        $inputs = $request->only(['cash', 'grand_total', 'change']);
+        $inputs = $request->only(['cash', 'grand_total', 'change', 'customer_id']);
         $inputs['invoice_code'] = $invoice_code;
         $inputs['cashier_id'] = auth()->user()->id;
+
+        $customer = Customer::where('id', $request->customer_id)->first(['id', 'name', 'email', 'phone', 'address', 'city', 'zip_code']);
+        $inputs['customer'] = $customer;
+
         $transaction = Transaction::create($inputs);
 
         // Create Transaction Detail and Delete Current Carts

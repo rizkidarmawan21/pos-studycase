@@ -8,7 +8,7 @@ import axios from "axios";
 import { notify } from "notiwind";
 import { string } from "vue-types";
 import { Head } from "@inertiajs/inertia-vue3";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import AppLayout from '@/layouts/apps.vue';
 import debounce from "@/composables/debounce"
 import VDropdownEditMenu from '@/components/VDropdownEditMenu/index.vue';
@@ -18,12 +18,14 @@ import VBreadcrumb from '@/components/VBreadcrumb/index.vue';
 import VLoading from '@/components/VLoading/index.vue';
 import VEmpty from '@/components/src/icons/VEmpty.vue';
 import VButton from '@/components/VButton/index.vue';
-import VDetail from '@/components/src/icons/VDetail.vue';
+import VAlert from '@/components/VAlert/index.vue';
+import VEdit from '@/components/src/icons/VEdit.vue';
+import VTrash from '@/components/src/icons/VTrash.vue';
 import VFilter from './Filter.vue';
 import VModalForm from './ModalForm.vue';
 
 const query = ref([])
-const filter = ref({});
+const searchFilter = ref("");
 const breadcrumb = [
     {
         name: "Dashboard",
@@ -31,9 +33,9 @@ const breadcrumb = [
         to: route('dashboard.index')
     },
     {
-        name: "Report",
+        name: "Customer",
         active: true,
-        to: route('report.index')
+        to: route('customer.index')
     },
 ]
 const pagination = ref({
@@ -43,9 +45,17 @@ const pagination = ref({
     total: 0,
     total_pages: 1
 })
+const alertData = reactive({
+    headerLabel: '',
+    contentLabel: '',
+    closeLabel: '',
+    submitLabel: '',
+})
+const updateAction = ref(false)
 const itemSelected = ref({})
+const openAlert = ref(false)
 const openModalForm = ref(false)
-const heads = ["Invoice", "Customer", "Date", "Total", ""]
+const heads = ["Name", "Email", "Phone", "Address", "City", "Zip Code", ""]
 const isLoading = ref(true)
 
 const props = defineProps({
@@ -53,11 +63,10 @@ const props = defineProps({
 })
 
 const getData = debounce(async (page) => {
-    axios.get(route('report.getdata'), {
+    axios.get(route('customer.getdata'), {
         params: {
             page: page,
-            start_date: filter.value.start_date,
-            end_date: filter.value.end_date
+            search: searchFilter.value
         }
     }).then((res) => {
         query.value = res.data.data
@@ -83,21 +92,26 @@ const previousPaginate = () => {
     getData(pagination.value.current_page)
 }
 
-const applyFilter = (data) => {
-    filter.value = data
+const searchHandle = (search) => {
+    searchFilter.value = search
     isLoading.value = true
     getData(1)
+};
+
+const handleAddModalForm = () => {
+    updateAction.value = false
+    openModalForm.value = true
 }
 
-const clearFilter = (data) => {
-    filter.value = data
-    isLoading.value = true
-    getData(1)
-}
-
-const handleDetailModal = (data) => {
+const handleEditModal = (data) => {
+    updateAction.value = true
     itemSelected.value = data
     openModalForm.value = true
+}
+
+const successSubmit = () => {
+    isLoading.value = true
+    getData(pagination.value.current_page)
 }
 
 const closeModalForm = () => {
@@ -105,13 +119,39 @@ const closeModalForm = () => {
     openModalForm.value = false
 }
 
-const handleExportExcel = () => {
-    window.open(route('report.exportexcel', { 'start_date': filter.value.start_date, 'end_date': filter.value.end_date }));
+const alertDelete = (data) => {
+    itemSelected.value = data
+    openAlert.value = true
+    alertData.headerLabel = 'Are you sure to delete this?'
+    alertData.contentLabel = "You won't be able to revert this!"
+    alertData.closeLabel = 'Cancel'
+    alertData.submitLabel = 'Delete'
 }
 
-const handleExportPdf = () => {
-    window.open(route('report.exportpdf', { 'start_date': filter.value.start_date, 'end_date': filter.value.end_date }));
+const closeAlert = () => {
+    itemSelected.value = ref({})
+    openAlert.value = false
 }
+
+const deleteHandle = async () => {
+    axios.delete(route('customer.delete', { 'id': itemSelected.value.id })
+    ).then((res) => {
+        notify({
+            type: "success",
+            group: "top",
+            text: res.data.meta.message
+        }, 2500)
+        openAlert.value = false
+        isLoading.value = true
+        getData(pagination.value.current_page)
+    }).catch((res) => {
+        notify({
+            type: "error",
+            group: "top",
+            text: res.response.data.message
+        }, 2500)
+    })
+};
 
 onMounted(() => {
     getData(1);
@@ -122,18 +162,17 @@ onMounted(() => {
     <Head :title="props.title" />
     <VBreadcrumb :routes="breadcrumb" />
     <div class="mb-4 sm:mb-6 flex justify-between items-center">
-        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Report</h1>
+        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Customer</h1>
     </div>
     <div class="bg-white shadow-lg rounded-sm border border-slate-200" :class="isLoading && 'min-h-[40vh] sm:min-h-[50vh]'">
         <header class="block justify-between items-center sm:flex py-6 px-4">
             <h2 class="font-semibold text-slate-800">
-                All Transactions <span class="text-slate-400 !font-medium ml">{{ pagination.total }}</span>
+                All Customers <span class="text-slate-400 !font-medium ml">{{ pagination.total }}</span>
             </h2>
             <div class="mt-3 sm:mt-0 flex space-x-2 sm:justify-between justify-end">
                 <!-- Filter -->
-                <VFilter @apply="applyFilter" @clear="clearFilter" />
-                <VButton label="Export Excel" type="success" @click="handleExportExcel" class="mt-auto" />
-                <VButton label="Export Pdf" type="danger" @click="handleExportPdf" class="mt-auto" />
+                <VFilter @search="searchHandle" />
+                <VButton label="Add Customer" type="primary" @click="handleAddModalForm" class="mt-auto" />
             </div>
         </header>
 
@@ -152,19 +191,29 @@ onMounted(() => {
                 </td>
             </tr>
             <tr v-for="(data, index) in query" :key="index" v-else>
-                <td class="px-4 whitespace-nowrap h-16"> {{ data.invoice_code }} </td>
-                <td class="px-4 whitespace-nowrap h-16"> {{ data.customer.name}} </td>
-                <td class="px-4 whitespace-nowrap h-16"> {{ data.created_at }} </td>
-                <td class="px-4 whitespace-nowrap h-16"> Rp{{ data.grand_total_formatted }} </td>
+                <td class="px-4 whitespace-nowrap h-16"> {{ data.name }} </td>
+                <td class="px-4 whitespace-nowrap h-16"> {{ data.email ?? '-' }} </td>
+                <td class="px-4 whitespace-nowrap h-16"> {{ data.phone }} </td>
+                <td class="px-4 h-16"> {{ data.address }} </td>
+                <td class="px-4 whitespace-nowrap h-16"> {{ data.city }} </td>
+                <td class="px-4 whitespace-nowrap h-16"> {{ data.zip_code ?? '-' }} </td>
                 <td class="px-4 whitespace-nowrap h-16 text-right">
                     <VDropdownEditMenu class="relative inline-flex r-0" :align="'right'"
                         :last="index === query.length - 1 ? true : false">
-                        <li class="cursor-pointer hover:bg-slate-100" @click="handleDetailModal(data)">
+                        <li class="cursor-pointer hover:bg-slate-100" @click="handleEditModal(data)">
                             <div class="flex items-center space-x-2 p-3">
                                 <span>
-                                    <VDetail color="primary" />
+                                    <VEdit color="primary" />
                                 </span>
-                                <span>Show</span>
+                                <span>Edit</span>
+                            </div>
+                        </li>
+                        <li class="cursor-pointer hover:bg-slate-100">
+                            <div class="flex justify-between items-center space-x-2 p-3" @click="alertDelete(data)">
+                                <span>
+                                    <VTrash color="danger" />
+                                </span>
+                                <span>Delete</span>
                             </div>
                         </li>
                     </VDropdownEditMenu>
@@ -175,5 +224,9 @@ onMounted(() => {
             <VPagination :pagination="pagination" @next="nextPaginate" @previous="previousPaginate" />
         </div>
     </div>
-    <VModalForm :data="itemSelected" :open-dialog="openModalForm" @close="closeModalForm" />
+    <VAlert :open-dialog="openAlert" @closeAlert="closeAlert" @submitAlert="deleteHandle" type="danger"
+        :headerLabel="alertData.headerLabel" :content-label="alertData.contentLabel" :close-label="alertData.closeLabel"
+        :submit-label="alertData.submitLabel" />
+    <VModalForm :data="itemSelected" :update-action="updateAction" :open-dialog="openModalForm" @close="closeModalForm"
+        @successSubmit="successSubmit"/>
 </template>

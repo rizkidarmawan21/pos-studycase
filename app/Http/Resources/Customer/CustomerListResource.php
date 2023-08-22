@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Report;
+namespace App\Http\Resources\Customer;
 
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ReportListResource extends ResourceCollection
+class CustomerListResource extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -19,7 +18,7 @@ class ReportListResource extends ResourceCollection
             'data' => $this->transformCollection($this->collection),
             'meta' => [
                 "success" => true,
-                "message" => "Success get report lists",
+                "message" => "Success get customer lists",
                 'pagination' => $this->metaData()
             ]
         ];
@@ -29,17 +28,12 @@ class ReportListResource extends ResourceCollection
     {
         return [
             'id' => $data->id,
-            'cashier' => $data->cashier,
-            'customer' => $data->customer,
-            'invoice_code' => $data->invoice_code,
-            'cash' => $data->cash,
-            'cash_formatted' => number_format($data->cash, 2, ',', '.'),
-            'change' => $data->change,
-            'change_formatted' => number_format($data->change, 2, ',', '.'),
-            'grand_total' => $data->grand_total,
-            'grand_total_formatted' => number_format($data->grand_total, 2,',', '.'),
-            'transaction_details' => $data->transaction_details,
-            'created_at' => Carbon::parse($data->created_at)->format('d F Y')
+            'name' => $data->name,
+            'email' => $data->email,
+            'phone' => $data->phone,
+            'address' => $data->address,
+            'city' => $data->city,
+            'zip_code' => $data->zip_code,
         ];
     }
 
