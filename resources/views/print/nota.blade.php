@@ -108,12 +108,6 @@
                 <td>:</td>
                 <td>{{ $data->cashier->name ?? '' }}</td>
             </tr>
-            <tr>
-
-                <td>CUSTOMER</td>
-                <td>:</td>
-                <td>{{ $data->customer['name'] }}</td>
-            </tr>
         </table>
 
         <div class="transaction">

@@ -32,12 +32,6 @@ class GetSidebarMenuAction
                 'can'  => 'view_product'
             ],
             [
-                'text' => 'Customer',
-                'url'  => route('customer.index'),
-                'icon' => 'VUsers',
-                'can'  => 'view_customer'
-            ],
-            [
                 'text' => 'Report',
                 'url'  => route('report.index'),
                 'icon' => 'VBook',

@@ -7,7 +7,6 @@ import VInput from '@/components/VInput/index.vue';
 import VSelect from '@/components/VSelect/index.vue';
 import VButton from '@/components/VButton/index.vue';
 
-
 const props = defineProps({
     additional: object().def({})
 })
@@ -22,7 +21,6 @@ const productPlaceholder = ref('Select Product')
 const productSelectHandle = ref()
 const productLoading = ref(true)
 const isLoading = ref(false)
-const openModalAddCustomer = ref(false)
 
 const categorySelected = () => {
     formError.value.category_id = ''
@@ -41,8 +39,6 @@ const getProductPlaceholder = () => {
         productPlaceholder.value = 'Select Product';
     }
 }
-
-
 
 const getProduct = async () => {
     axios.get(route('transaction.getproductdata'), {
@@ -110,17 +106,15 @@ onMounted(() => {
     <div class="w-full md:w-1/3 rounded-lg bg-white px-4 py-6 border drop-shadow-sm h-fit">
         <div class="grid grid-cols-1 gap-3">
             <VSelect placeholder="Select Category" v-model="form.category_id" :options="additional.category_list"
-                label="Category" :errorMessage="formError.category_id" @update:modelValue="categorySelected"
-                ref="categorySelectHandle" />
+                label="Category" :errorMessage="formError.category_id" @update:modelValue="categorySelected" ref="categorySelectHandle"/>
             <VSelect :placeholder="productPlaceholder" :required="true" v-model="form.product_id" :options="productOptions"
                 label="Product" :errorMessage="formError.product_id" @update:modelValue="formError.product_id = ''"
                 ref="productSelectHandle" :disabled="productLoading" />
-            <VInput placeholder="Input Qty" label="Qty" :required="true" v-model="form.qty" :errorMessage="formError.qty"
-                @update:modelValue="formError.qty = ''" type="number" />
+            <VInput placeholder="Input Qty" label="Qty" :required="true" v-model="form.qty"
+                :errorMessage="formError.qty" @update:modelValue="formError.qty = ''" type="number" />
         </div>
         <div class="flex flex-wrap justify-end space-x-2 mt-3">
             <VButton :is-loading="isLoading" label="Add to Cart" type="primary" @click="submit" />
         </div>
     </div>
-    
 </template>
