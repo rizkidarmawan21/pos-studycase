@@ -10,9 +10,6 @@ class Transaction extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $casts = [
-        'customer' => 'array'
-    ];
 
     public function transaction_details()
     {

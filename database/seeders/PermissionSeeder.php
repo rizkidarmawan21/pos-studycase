@@ -77,15 +77,6 @@ class PermissionSeeder extends Seeder
                                 'label' => 'View Product',
                             ]
                         ]
-                    ],
-                    [
-                        'name' => 'customer',
-                        'permission' => [
-                            [
-                                'name' => 'view_customer',
-                                'label' => 'View Customer',
-                            ]
-                        ]
                     ]
                 ]
             ],

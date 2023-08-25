@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\TransactionService;
 use App\Actions\Options\GetCategoryOptions;
-use App\Actions\Options\GetCustomerOptions;
 use App\Http\Requests\Transaction\AddCartRequest;
 use App\Http\Requests\Transaction\UpdateCartRequest;
 use App\Http\Resources\Transaction\CartListResource;
@@ -17,11 +16,10 @@ use App\Http\Resources\Transaction\SubmitOrderResource;
 
 class TransactionController extends Controller
 {
-    public function __construct(TransactionService $transactionService, GetCategoryOptions $getCategoryOptions, GetCustomerOptions $getCustomerOptions)
+    public function __construct(TransactionService $transactionService, GetCategoryOptions $getCategoryOptions)
     {
         $this->transactionService = $transactionService;
         $this->getCategoryOptions = $getCategoryOptions;
-        $this->getCustomerOptions = $getCustomerOptions;
     }
 
     public function index()
@@ -29,19 +27,9 @@ class TransactionController extends Controller
         return Inertia::render('admin/transaction/index', [
             "title" => 'POS | Transaction',
             "additional" => [
-                'category_list' => $this->getCategoryOptions->handle(),
+                'category_list' => $this->getCategoryOptions->handle()
             ]
         ]);
-    }
-
-    public function getCustomerData()
-    {
-        try {
-            $data = $this->getCustomerOptions->handle();
-            return $data;
-        } catch (\Exception $e) {
-            return $this->exceptionError($e->getMessage());
-        }
     }
 
     public function getCartData(Request $request)
@@ -109,7 +97,7 @@ class TransactionController extends Controller
             $data = $this->transactionService->payOrder($request);
             $result = new SubmitOrderResource($data, 'Success Create Order');
             DB::commit();
-
+            
             return $this->respond($result);
         } catch (\Exception $e) {
             DB::rollback();

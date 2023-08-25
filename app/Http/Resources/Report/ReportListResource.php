@@ -30,7 +30,6 @@ class ReportListResource extends ResourceCollection
         return [
             'id' => $data->id,
             'cashier' => $data->cashier,
-            'customer' => $data->customer,
             'invoice_code' => $data->invoice_code,
             'cash' => $data->cash,
             'cash_formatted' => number_format($data->cash, 2, ',', '.'),
