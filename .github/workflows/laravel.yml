@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
       - name: Install Dependencies Node
-        run: npm install
+        run: npm install --force
       - name: Build tailwindcss
         run: npm run build
       - name: Generate key
